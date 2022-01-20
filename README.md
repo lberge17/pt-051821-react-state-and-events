@@ -1,70 +1,120 @@
-# Getting Started with Create React App
+# React: State and Events
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+### Review: Components
 
-In the project directory, you can run:
+#### Q: What are components?
 
-### `npm start`
+Functional or class components. They return React elements (written in JSX).
+Need to be exported and imported in order to use in other files.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Review: Props
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+#### Q: What are props?
 
-### `npm test`
+Information sent into a child component from a parent component like an HTML attribute:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```jsx
+    // name and age are props
+    <MyComponent name={'Laura'} age={25} />
 
-### `npm run build`
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**Components should never change their own props.**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### State
 
-### `npm run eject`
+#### Q: What is state?
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Information managed from within a component.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+DO NOT modify state directly.
+This will not re-render a component
+State should always be immutable.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+https://reactjs.org/docs/state-and-lifecycle.html
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+Class Component
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```jsx
+import React, { Component } from 'react'
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+export default class List extends Component{
 
-### Code Splitting
+    constructor(props){
+        super(props)
+        this.state = {
+            items: []
+        }
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+    }
 
-### Analyzing the Bundle Size
+    //...
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+    someMethod(){
+        const newItemsArray = ["Learn about State"]
+        this.setState({items: newItemsArray})
+        //OR
+        this.setState(prevState => ({
+            items: [...prevState.items, newItemsArray[0]]
+        }))
+    }
 
-### Making a Progressive Web App
+}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```
 
-### Deployment
+React Hooks
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
+```jsx
+import React, { useState } from "react";
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+export default function List() {
+    const [items, setItems] = useState([]);
+    //...
+    const someFunction = (item) => setItems(prevItems => [...prevItems, item])
+}
+
+```
+
+**NOTE:** class components `setState` accepts a second OPTIONAL argument: a function which is a callback once the state is set (b/c it is set asynchronously). To get a similar effect with react hooks, you use useEffect, which accepts a function as an argument which runs upon initial render and every time state changes:
+
+```jsx
+
+import React, { useState } from "react";
+
+export default function List() {
+  const [items, setItems] = useState([]);
+    //...
+
+    useEffect(() => {
+        // this will run upon initial render and after every change to items in dependency array
+    }, [items])
+}
+
+```
+
+setState does shallow merges so you can set only one key-value pair at once and it won't overwrite the rest of the state.
+
+In hooks, setProperty completely overwrites it instead of merging
+
+
+### Events
+
+```jsx
+
+export default function MyButton() {
+    const [clicked, setClicked] = useState(false);
+    //...
+
+    return (
+        <button onClick={() => setClicked(pV => !pV)}>{clicked ? "CLICK ME!" : "click me AGAIN!"}</button>
+    )
+}
+
+```
