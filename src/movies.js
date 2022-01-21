@@ -31,6 +31,6 @@ let movies = [
         release_date: "July 9, 2021",
         likes: 8,
     },
-  ];
+];
   
   export default movies;
