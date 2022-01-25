@@ -17,14 +17,6 @@ let movies = [
     },
     {
         id: 3,
-        title: "The Conjuring 3: The Devil Made Me Do It",
-        image:
-            "https://in.bmscdn.com/iedb/movies/images/mobile/thumbnail/xlarge/the-conjuring-3-the-devil-made-me-do-it-et00122455-22-04-2021-08-12-06.jpg",
-        release_date: "June 4, 2021",
-        likes: 20,
-    },
-    {
-        id: 4,
         title: "Black Widow",
         image:
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTa20iyPoUFqmPvT6TzCwHHei63DWYda3UW5ufJsAg4sOm4ypAA",
